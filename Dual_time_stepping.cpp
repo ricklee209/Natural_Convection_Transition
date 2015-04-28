@@ -345,86 +345,86 @@ double (*J_v)[Y_m][Z_m] = new double[X_np][Y_m][Z_m]
 // ------------------------------- Y_Absorbing boundary condition ------------------------------- //
 
 
-	double C_plan;
+	// double C_plan;
 
-	double V_in_0 = 2.15;
+	// double V_in_0 = 2.15;
 	
-	double Sigma_in_0 = 0.1;
+	// double Sigma_in_0 = 0.1;
 
-	double V_out_0 = 2.25;
+	// double V_out_0 = 2.25;
 	
-	double Sigma_out_0 = 2.25;
+	// double Sigma_out_0 = 2.25;
 	
-	double V_in_1, V_out_1;
+	// double V_in_1, V_out_1;
 	
-	double Sigma_in, Sigma_out;
+	// double Sigma_in, Sigma_out;
 	
-	int nx_inp = nx/2;
+	// int nx_inp = nx/2;
 	
-	int nx_outp = nx/2;
-	
-	
-	if( (gstart[myid]) < nx_inp ) {
+	// int nx_outp = nx/2;
 	
 	
-//// ============================================ ////
-		istart =  2;	
-//// ============================================ ////
-		if ( (gend0[myid]) < nx_inp )
-			iend = gend[myid];
-		else
-			iend = nx_inp-gstart[myid]+2;
-//// ============================================ ////
+	// if( (gstart[myid]) < nx_inp ) {
+	
+	
+// //// ============================================ ////
+		// istart =  2;	
+// //// ============================================ ////
+		// if ( (gend0[myid]) < nx_inp )
+			// iend = gend[myid];
+		// else
+			// iend = nx_inp-gstart[myid]+2;
+// //// ============================================ ////
 
-		for (i = istart ; i <= iend; i++) {
+		// for (i = istart ; i <= iend; i++) {
 				
-	#pragma omp parallel for private(C_plan,beta,k,rho,u,v,w,VV,P,V_in_1,Sigma_in)
-				for (j = ny-ny_buffer+1; j <= ny; j++) {
-				//for (j = ny-ny_buffer+2; j <= nyy; j++) {
-					for (k = 2; k <= nz; k++) {
+	// #pragma omp parallel for private(C_plan,beta,k,rho,u,v,w,VV,P,V_in_1,Sigma_in)
+				// for (j = ny-ny_buffer+1; j <= ny; j++) {
+				// //for (j = ny-ny_buffer+2; j <= nyy; j++) {
+					// for (k = 2; k <= nz; k++) {
 
-						rho = U1_[i][j][k]*J[i][j][k];
-						u = U2_[i][j][k]/U1_[i][j][k];
-						v = U3_[i][j][k]/U1_[i][j][k];
-						w = U4_[i][j][k]/U1_[i][j][k];     
-						VV = u*u+v*v+w*w;
-						P = (U5_[i][j][k]-0.5*rho*VV)*(K-1);
-						C = K*P/rho;
+						// rho = U1_[i][j][k]*J[i][j][k];
+						// u = U2_[i][j][k]/U1_[i][j][k];
+						// v = U3_[i][j][k]/U1_[i][j][k];
+						// w = U4_[i][j][k]/U1_[i][j][k];     
+						// VV = u*u+v*v+w*w;
+						// P = (U5_[i][j][k]-0.5*rho*VV)*(K-1);
+						// C = K*P/rho;
 
-						/* preconditioning */
-						beta = max(VV/C,e);
+						// /* preconditioning */
+						// beta = max(VV/C,e);
 
-						C_plan = 0.5*sqrt(v*v*(beta-1)*(beta-1)+4*beta*C);
+						// C_plan = 0.5*sqrt(v*v*(beta-1)*(beta-1)+4*beta*C);
 						
-						V_in_1 = pow( (j-(ny-ny_buffer)-0.5)/ny_buffer, 3.0 )* V_in_0*C_plan;
+						// V_in_1 = pow( (j-(ny-ny_buffer)-0.5)/ny_buffer, 3.0 )* V_in_0*C_plan;
 						
-						Sigma_in = Sigma_in_0*V_in_1/high;
+						// Sigma_in = Sigma_in_0*V_in_1/high;
 
-						// ---- flow direction should be the same with prapogation speed --- //
+						// // ---- flow direction should be the same with prapogation speed --- //
 						
 						
 						
-						Residual1[i][j][k] = V_in_1*( U1_[i][j][k]*J[i][j][k]-U1_[i][j-1][k]*J[i][j-1][k] )/deltaET+Sigma_in*(rho-1.1842);
-						Residual2[i][j][k] = V_in_1*( U2_[i][j][k]*J[i][j][k]-U2_[i][j-1][k]*J[i][j-1][k] )/deltaET+Sigma_in*(rho*u);
-						Residual3[i][j][k] = V_in_1*( U3_[i][j][k]*J[i][j][k]-U3_[i][j-1][k]*J[i][j-1][k] )/deltaET+Sigma_in*(rho*v);
-						Residual4[i][j][k] = V_in_1*( U4_[i][j][k]*J[i][j][k]-U4_[i][j-1][k]*J[i][j-1][k] )/deltaET+Sigma_in*(rho*w);
-						Residual5[i][j][k] = V_in_1*( U5_[i][j][k]*J[i][j][k]-U5_[i][j-1][k]*J[i][j-1][k] )/deltaET+Sigma_in*(U5_[i][j][k]*J[i][j][k]-253250.0);
+						// Residual1[i][j][k] = V_in_1*( U1_[i][j][k]*J[i][j][k]-U1_[i][j-1][k]*J[i][j-1][k] )/deltaET+Sigma_in*(rho-1.1842);
+						// Residual2[i][j][k] = V_in_1*( U2_[i][j][k]*J[i][j][k]-U2_[i][j-1][k]*J[i][j-1][k] )/deltaET+Sigma_in*(rho*u);
+						// Residual3[i][j][k] = V_in_1*( U3_[i][j][k]*J[i][j][k]-U3_[i][j-1][k]*J[i][j-1][k] )/deltaET+Sigma_in*(rho*v);
+						// Residual4[i][j][k] = V_in_1*( U4_[i][j][k]*J[i][j][k]-U4_[i][j-1][k]*J[i][j-1][k] )/deltaET+Sigma_in*(rho*w);
+						// Residual5[i][j][k] = V_in_1*( U5_[i][j][k]*J[i][j][k]-U5_[i][j-1][k]*J[i][j-1][k] )/deltaET+Sigma_in*(U5_[i][j][k]*J[i][j][k]-253250.0);
 						
-						//if(myid == 0 && i == 2 && k == 2) printf("%f\t%f\t%f\t%f\t%f\t%f\n",J_v[i][j-1][k-1],Residual1[i][j][k],Residual2[i][j][k],Residual3[i][j][k],Residual4[i][j][k],Residual5[i][j][k]);
+						// //if(myid == 0 && i == 2 && k == 2) printf("%f\t%f\t%f\t%f\t%f\t%f\n",J_v[i][j-1][k-1],Residual1[i][j][k],Residual2[i][j][k],Residual3[i][j][k],Residual4[i][j][k],Residual5[i][j][k]);
 						
-						//if(myid == 0 && i == 2 && k == 2) printf("%f\t%f\t%f\t%f\t%f\t%f\n",etdy[i][j][k]/J[i][j][k],Residual1[i][j][k],Residual2[i][j][k],Residual3[i][j][k],Residual4[i][j][k],Residual5[i][j][k]);
+						// //if(myid == 0 && i == 2 && k == 2) printf("%f\t%f\t%f\t%f\t%f\t%f\n",etdy[i][j][k]/J[i][j][k],Residual1[i][j][k],Residual2[i][j][k],Residual3[i][j][k],Residual4[i][j][k],Residual5[i][j][k]);
 						
 						
-					}
-				}
+					// }
+				// }
 
-	#pragma omp barrier
+	// #pragma omp barrier
 
-		}
+		// }
 		
 		
 		
-	} // ---- if( (gstart[myid]) < nx_inlet ) ---- //
+	// } // ---- if( (gstart[myid]) < nx_inlet ) ---- //
 	
 	
 	
@@ -432,64 +432,64 @@ double (*J_v)[Y_m][Z_m] = new double[X_np][Y_m][Z_m]
 	
 	
 	
-	if (gend0[myid] > (X_out-nx_outp-1)) {
+	// if (gend0[myid] > (X_out-nx_outp-1)) {
 	
 	
-//// ============================================ ////
+// //// ============================================ ////
 
-		if ( (gstart[myid]) > (X_out-nx_outp-1))
-			istart =  3;	
-		else 
-			istart =  (X_out-nx_outp)-gstart[myid]+3;
+		// if ( (gstart[myid]) > (X_out-nx_outp-1))
+			// istart =  3;	
+		// else 
+			// istart =  (X_out-nx_outp)-gstart[myid]+3;
 
-//// ============================================ ////
-		iend = gend[myid];			    		  ////
-//// ============================================ ////
+// //// ============================================ ////
+		// iend = gend[myid];			    		  ////
+// //// ============================================ ////
 
 
-		for (i = istart ; i <= iend; i++) {
+		// for (i = istart ; i <= iend; i++) {
 				
-	#pragma omp parallel for private(C_plan,beta,k,rho,u,v,w,VV,P,V_out_1,Sigma_out)
-				for (j = ny-ny_buffer+1; j <= ny; j++) {
-				//for (j = ny-ny_buffer+2; j <= nyy; j++) {
-					for (k = 2; k <= nz; k++) {
+	// #pragma omp parallel for private(C_plan,beta,k,rho,u,v,w,VV,P,V_out_1,Sigma_out)
+				// for (j = ny-ny_buffer+1; j <= ny; j++) {
+				// //for (j = ny-ny_buffer+2; j <= nyy; j++) {
+					// for (k = 2; k <= nz; k++) {
 
-						rho = U1_[i][j][k]*J[i][j][k];
-						u = U2_[i][j][k]/U1_[i][j][k];
-						v = U3_[i][j][k]/U1_[i][j][k];
-						w = U4_[i][j][k]/U1_[i][j][k];     
-						VV = u*u+v*v+w*w;
-						P = (U5_[i][j][k]-0.5*rho*VV)*(K-1);
-						C = K*P/rho;
+						// rho = U1_[i][j][k]*J[i][j][k];
+						// u = U2_[i][j][k]/U1_[i][j][k];
+						// v = U3_[i][j][k]/U1_[i][j][k];
+						// w = U4_[i][j][k]/U1_[i][j][k];     
+						// VV = u*u+v*v+w*w;
+						// P = (U5_[i][j][k]-0.5*rho*VV)*(K-1);
+						// C = K*P/rho;
 						
 						
-						/* preconditioning */
-						beta = max(VV/C,e);
+						// /* preconditioning */
+						// beta = max(VV/C,e);
 
-						C_plan = 0.5*sqrt(v*v*(beta-1)*(beta-1)+4*beta*C);
+						// C_plan = 0.5*sqrt(v*v*(beta-1)*(beta-1)+4*beta*C);
 						
-						V_out_1 = pow( (j-(ny-ny_buffer)-0.5)/ny_buffer, 3.0 )* V_out_0*C_plan;
+						// V_out_1 = pow( (j-(ny-ny_buffer)-0.5)/ny_buffer, 3.0 )* V_out_0*C_plan;
 						
-						Sigma_out = Sigma_out_0*V_out_1/high;
-						
-						
-						Residual1[i][j][k] = -(V_out_1*( U1_[i][j][k]*J[i][j][k]-U1_[i][j-1][k]*J[i][j-1][k] )/deltaET+Sigma_out*(rho-1.1842));
-						Residual2[i][j][k] = -(V_out_1*( U2_[i][j][k]*J[i][j][k]-U2_[i][j-1][k]*J[i][j-1][k] )/deltaET+Sigma_out*(rho*u));
-						Residual3[i][j][k] = -(V_out_1*( U3_[i][j][k]*J[i][j][k]-U3_[i][j-1][k]*J[i][j-1][k] )/deltaET+Sigma_out*(rho*v));
-						Residual4[i][j][k] = -(V_out_1*( U4_[i][j][k]*J[i][j][k]-U4_[i][j-1][k]*J[i][j-1][k] )/deltaET+Sigma_out*(rho*w));
-						Residual5[i][j][k] = -(V_out_1*( U5_[i][j][k]*J[i][j][k]-U5_[i][j-1][k]*J[i][j-1][k] )/deltaET+Sigma_out*(U5_[i][j][k]*J[i][j][k]-253250.0));
+						// Sigma_out = Sigma_out_0*V_out_1/high;
 						
 						
-					}
-				}
+						// Residual1[i][j][k] = -(V_out_1*( U1_[i][j][k]*J[i][j][k]-U1_[i][j-1][k]*J[i][j-1][k] )/deltaET+Sigma_out*(rho-1.1842));
+						// Residual2[i][j][k] = -(V_out_1*( U2_[i][j][k]*J[i][j][k]-U2_[i][j-1][k]*J[i][j-1][k] )/deltaET+Sigma_out*(rho*u));
+						// Residual3[i][j][k] = -(V_out_1*( U3_[i][j][k]*J[i][j][k]-U3_[i][j-1][k]*J[i][j-1][k] )/deltaET+Sigma_out*(rho*v));
+						// Residual4[i][j][k] = -(V_out_1*( U4_[i][j][k]*J[i][j][k]-U4_[i][j-1][k]*J[i][j-1][k] )/deltaET+Sigma_out*(rho*w));
+						// Residual5[i][j][k] = -(V_out_1*( U5_[i][j][k]*J[i][j][k]-U5_[i][j-1][k]*J[i][j-1][k] )/deltaET+Sigma_out*(U5_[i][j][k]*J[i][j][k]-253250.0));
+						
+						
+					// }
+				// }
 
-	#pragma omp barrier
+	// #pragma omp barrier
 
-		}		
+		// }		
 		
 		
 	
-	} // ---- if (gend0[myid] > (X_out-nx_outlet-1)) ---- //
+	// } // ---- if (gend0[myid] > (X_out-nx_outlet-1)) ---- //
 	
 
 	
@@ -504,141 +504,133 @@ double (*J_v)[Y_m][Z_m] = new double[X_np][Y_m][Z_m]
 // ------------------------------- Absorbing boundary condition ------------------------------- //
 // -------------------------------------------------------------------------------------------- //
 
-	// double C_plan;
+	double C_plan;
 
-	// double U_in_0 = 1.15;
+	double U_in_0 = 1.15;
 	
-	// double Sigma_in_0 = 0.035;
+	double Sigma_in_0 = 0.035;
 
-	// double U_out_0 = 1.15;
+	double U_out_0 = 1.15;
 	
-	// double Sigma_out_0 = 1.25;
+	double Sigma_out_0 = 1.25;
 	
-	// double U_in_1, U_out_1;
+	double U_in_1, U_out_1;
 	
-	// double Sigma_in, Sigma_out;
+	double Sigma_in, Sigma_out;
 
 
 
-	// if( (gstart[myid]) < nx_abs ) {
+	if( (gstart[myid]) < nx_inlet ) {
 	
-// //// ============================================ ////
-		// istart =  3;	
-// //// ============================================ ////
-		// if ( (gend0[myid]) < nx_abs )
-			// iend = gend[myid];
-		// else
-			// iend = nx_abs-gstart[myid]+2;
-// //// ============================================ ////
+//// ============================================ ////
+		istart =  3;	
+//// ============================================ ////
+		if ( (gend0[myid]) < nx_inlet )
+			iend = gend[myid];
+		else
+			iend = nx_inlet-gstart[myid]+2;
+//// ============================================ ////
 
 
-	// for (i = istart ; i <= iend; i++) {
+	for (i = istart ; i <= iend; i++) {
 			
-// #pragma omp parallel for private(C_plan,beta,k,rho,u,v,w,VV,P,U_in_1,Sigma_in)
+#pragma omp parallel for private(C,C_plan,beta,k,rho,u,v,w,VV,P,U_in_1,Sigma_in)
 
-			// for (j = 2; j <= ny; j++) {
-				// for (k = 2; k <= nz; k++) {
+			for (j = 2; j <= ny; j++) {
+				for (k = 2; k <= nz; k++) {
 
-					// rho = U1_[i][j][k]*J[i][j][k];
-					// u = U2_[i][j][k]/U1_[i][j][k];
-					// v = U3_[i][j][k]/U1_[i][j][k];
-					// w = U4_[i][j][k]/U1_[i][j][k];     
-					// VV = u*u+v*v+w*w;
-					// P = (U5_[i][j][k]-0.5*rho*VV)*(K-1);
-					// C = K*P/rho;
+					rho = U1_[i][j][k]*J[i][j][k];
+					u = U2_[i][j][k]/U1_[i][j][k];
+					v = U3_[i][j][k]/U1_[i][j][k];
+					w = U4_[i][j][k]/U1_[i][j][k];     
+					VV = u*u+v*v+w*w;
+					P = (U5_[i][j][k]*J[i][j][k]-0.5*rho*VV)*(K-1);
+					C = K*P/rho;
 
-					// /* preconditioning */
-					// beta = max(VV/C,e);
+					/* preconditioning */
+					beta = max(VV/C,e);
 
-					// C_plan = 0.5*sqrt(u*u*(beta-1)*(beta-1)+4*beta*C);
+					C_plan = 0.5*sqrt(u*u*(beta-1)*(beta-1)+4*beta*C);
 					
-					// U_in_1 = pow( (((nx_abs-gstart[myid]-0.5)*1.0)/nx_abs), 3.0 )* U_in_0*C_plan;
+					U_in_1 = pow( (((nx_inlet-gstart[myid]-0.5)*1.0)/nx_inlet), 3.0 )* U_in_0*C_plan;
 					
-					// Sigma_in = Sigma_in_0*U_in_1/high;
+					Sigma_in = Sigma_in_0*U_in_1/high;
 
 					
+					Residual1[i][j][k] = -U_in_1*( U1_[i][j][k]*J[i][j][k]-U1_[i-1][j][k]*J[i-1][j][k] )/deltaXI-Sigma_in*(rho-1.1842);
+					Residual2[i][j][k] = -U_in_1*( U2_[i][j][k]*J[i][j][k]-U2_[i-1][j][k]*J[i-1][j][k] )/deltaXI-Sigma_in*(rho*u);
+					Residual3[i][j][k] = -U_in_1*( U3_[i][j][k]*J[i][j][k]-U3_[i-1][j][k]*J[i-1][j][k] )/deltaXI-Sigma_in*(rho*v);
+					Residual4[i][j][k] = -U_in_1*( U4_[i][j][k]*J[i][j][k]-U4_[i-1][j][k]*J[i-1][j][k] )/deltaXI-Sigma_in*(rho*w);
+					Residual5[i][j][k] = -U_in_1*( U5_[i][j][k]*J[i][j][k]-U5_[i-1][j][k]*J[i-1][j][k] )/deltaXI-Sigma_in*(U5_[i][j][k]*J[i][j][k]-253250.0);
 					
-					// Residual1[i][j][k] = -U_in_1*( U1_[i][j][k]-U1_[i-1][j][k] )/deltaXI-Sigma_in*(rho-1.1842)/J[i][j][k];
-					// Residual2[i][j][k] = -U_in_1*( U2_[i][j][k]-U2_[i-1][j][k] )/deltaXI-Sigma_in*(u)/J[i][j][k];
-					// Residual3[i][j][k] = -U_in_1*( U3_[i][j][k]-U3_[i-1][j][k] )/deltaXI-Sigma_in*(v)/J[i][j][k];
-					// Residual4[i][j][k] = -U_in_1*( U4_[i][j][k]-U4_[i-1][j][k] )/deltaXI-Sigma_in*(w)/J[i][j][k];
-					// Residual5[i][j][k] = -U_in_1*( U5_[i][j][k]-U5_[i-1][j][k] )/deltaXI-Sigma_in*(U5_[i][j][k]-253250/J[i][j][k]);
 					
-					
-					// // Residual1[i][j][k] = U_in_1*( U1_[i][j][k]-U1_[i-1][j][k] )/deltaXI-Sigma_in*(rho-1.1842);
-					// // Residual2[i][j][k] = U_in_1*( U2_[i][j][k]-U2_[i-1][j][k] )/deltaXI-Sigma_in*(u);
-					// // Residual3[i][j][k] = U_in_1*( U3_[i][j][k]-U3_[i-1][j][k] )/deltaXI-Sigma_in*(v);
-					// // Residual4[i][j][k] = U_in_1*( U4_[i][j][k]-U4_[i-1][j][k] )/deltaXI-Sigma_in*(w);
-					// // Residual5[i][j][k] = U_in_1*( U5_[i][j][k]-U5_[i-1][j][k] )/deltaXI-Sigma_in*(U5_[i][j][k]-253250/J[i][j][k]);
-					
-				// }
-			// }
-		// }
+				}
+			}
+		}
 
-// #pragma omp barrier
+#pragma omp barrier
 
-	// }
+	}
+
+
+
+
 
 	
-	// if (gend0[myid] > (X_out-nx_abs-1)) {
+	if (gend0[myid] > (X_out-nx_outlet-1)) {
 
-// //// ============================================ ////
+//// ============================================ ////
 
-		// if ( (gstart[myid]) > (X_out-nx_abs-1))
-			// istart =  3;	
-		// else 
-			// istart =  (X_out-nx_abs)-gstart[myid]+2;
+		if ( (gstart[myid]) > (X_out-nx_outlet-1))
+			istart =  3;	
+		else 
+			istart =  (X_out-nx_outlet)-gstart[myid]+2;
 
-// //// ============================================ ////
-		// iend = gend[myid];			    		  ////
-// //// ============================================ ////
+//// ============================================ ////
+		iend = gend[myid];			    		  ////
+//// ============================================ ////
 
-		// for (i = istart ; i <= iend; i++) {
+		for (i = istart ; i <= iend; i++) {
 			
-// #pragma omp parallel for private(C_plan,beta,k,rho,u,v,w,VV,P,U_out_1,Sigma_out)
+#pragma omp parallel for private(C,C_plan,beta,k,rho,u,v,w,VV,P,U_out_1,Sigma_out)
 
-			// for (j = 2; j <= ny; j++) {
-				// for (k = 2; k <= nz; k++) {
+			for (j = 2; j <= ny; j++) {
+				for (k = 2; k <= nz; k++) {
 
-					// rho = U1_[i][j][k]*J[i][j][k];
-					// u = U2_[i][j][k]/U1_[i][j][k];
-					// v = U3_[i][j][k]/U1_[i][j][k];
-					// w = U4_[i][j][k]/U1_[i][j][k];     
-					// VV = u*u+v*v+w*w;
-					// P = (U5_[i][j][k]-0.5*rho*VV)*(K-1);
-					// C = K*P/rho;
+					rho = U1_[i][j][k]*J[i][j][k];
+					u = U2_[i][j][k]/U1_[i][j][k];
+					v = U3_[i][j][k]/U1_[i][j][k];
+					w = U4_[i][j][k]/U1_[i][j][k];     
+					VV = u*u+v*v+w*w;
+					P = (U5_[i][j][k]-0.5*rho*VV)*(K-1);
+					C = K*P/rho;
 
-					// /* preconditioning */
-					// beta = max(VV/C,e);
+					/* preconditioning */
+					beta = max(VV/C,e);
 
-					// C_plan = 0.5*sqrt(u*u*(beta-1)*(beta-1)+4*beta*C);
+					C_plan = 0.5*sqrt(u*u*(beta-1)*(beta-1)+4*beta*C);
 					
-					// U_out_1 = pow( (((i+gstart[myid]-0.5-(nx-nx_abs))*1.0)/nx_abs), 3.0 )* U_out_0*C_plan;
+					U_out_1 = pow( (((i+gstart[myid]-0.5-(nx-nx_outlet))*1.0)/nx_outlet), 3.0 )* U_out_0*C_plan;
 
-					// Sigma_out = Sigma_out_0*U_out_1/high;
-					
-					
-					// // Residual1[i][j][k] = -U_out_1*( U1_[i][j][k]-U1_[i+1][j][k] )/deltaXI-Sigma_out*(rho-1.1842);
-					// // Residual2[i][j][k] = -U_out_1*( U2_[i][j][k]-U2_[i+1][j][k] )/deltaXI-Sigma_out*(u);
-					// // Residual3[i][j][k] = -U_out_1*( U3_[i][j][k]-U3_[i+1][j][k] )/deltaXI-Sigma_out*(v);
-					// // Residual4[i][j][k] = -U_out_1*( U4_[i][j][k]-U4_[i+1][j][k] )/deltaXI-Sigma_out*(w);
-					// // Residual5[i][j][k] = -U_out_1*( U5_[i][j][k]-U5_[i+1][j][k] )/deltaXI-Sigma_out*(U5_[i][j][k]-253250/J[i][j][k]);
+					Sigma_out = Sigma_out_0*U_out_1/high;
 					
 					
-					// Residual1[i][j][k] = -U_out_1*( U1_[i][j][k]-U1_[i-1][j][k] )/deltaXI-Sigma_out*(rho-1.1842)/J[i][j][k];
-					// Residual2[i][j][k] = -U_out_1*( U2_[i][j][k]-U2_[i-1][j][k] )/deltaXI-Sigma_out*(u)/J[i][j][k];
-					// Residual3[i][j][k] = -U_out_1*( U3_[i][j][k]-U3_[i-1][j][k] )/deltaXI-Sigma_out*(v)/J[i][j][k];
-					// Residual4[i][j][k] = -U_out_1*( U4_[i][j][k]-U4_[i-1][j][k] )/deltaXI-Sigma_out*(w)/J[i][j][k];
-					// Residual5[i][j][k] = -U_out_1*( U5_[i][j][k]-U5_[i-1][j][k] )/deltaXI-Sigma_out*(U5_[i][j][k]-253250/J[i][j][k]);
+					
+					Residual1[i][j][k] = -U_out_1*( U1_[i][j][k]*J[i][j][k]-U1_[i-1][j][k]*J[i-1][j][k] )/deltaXI+Sigma_out*(rho-1.1842);
+					Residual2[i][j][k] = -U_out_1*( U2_[i][j][k]*J[i][j][k]-U2_[i-1][j][k]*J[i-1][j][k] )/deltaXI+Sigma_out*(rho*u);
+					Residual3[i][j][k] = -U_out_1*( U3_[i][j][k]*J[i][j][k]-U3_[i-1][j][k]*J[i-1][j][k] )/deltaXI+Sigma_out*(rho*v);
+					Residual4[i][j][k] = -U_out_1*( U4_[i][j][k]*J[i][j][k]-U4_[i-1][j][k]*J[i-1][j][k] )/deltaXI+Sigma_out*(rho*w);
+					Residual5[i][j][k] = -U_out_1*( U5_[i][j][k]*J[i][j][k]-U5_[i-1][j][k]*J[i-1][j][k] )/deltaXI+Sigma_out*(U5_[i][j][k]*J[i][j][k]-253250.0);
 					
 					
-				// }
-			// }
-		// }
+					
+				}
+			}
+		}
 
-// #pragma omp barrier
+#pragma omp barrier
 
-	// }
+	}
 
 // -------------------------------------------------------------------------------------------- //
 // ------------------------------- Absorbing boundary condition ------------------------------- //
@@ -750,11 +742,11 @@ f\
 				f = -(rho-1.1842)*9.81;	
 				
 				
-				Rk1 = Residual1[i][j][k]+Rp1+Rf1;
-				Rk2 = Residual2[i][j][k]+Rp2+Rf2+vF2[i][j][k]+f/J[i][j][k];
-				Rk3 = Residual3[i][j][k]+Rp3+Rf3+vF3[i][j][k];
-				Rk4 = Residual4[i][j][k]+Rp4+Rf4+vF4[i][j][k];
-				Rk5 = Residual5[i][j][k]+Rp5+Rf5+vF5[i][j][k]+f*u/J[i][j][k];
+				Rk1 = Residual1[i][j][k]/J[i][j][k]+Rp1+Rf1;
+				Rk2 = Residual2[i][j][k]/J[i][j][k]+Rp2+Rf2+vF2[i][j][k]+f/J[i][j][k];
+				Rk3 = Residual3[i][j][k]/J[i][j][k]+Rp3+Rf3+vF3[i][j][k];
+				Rk4 = Residual4[i][j][k]/J[i][j][k]+Rp4+Rf4+vF4[i][j][k];
+				Rk5 = Residual5[i][j][k]/J[i][j][k]+Rp5+Rf5+vF5[i][j][k]+f*u/J[i][j][k];
 
 				
 				MR1[i][j][k] = (d11*Rk1+d12*Rk2+d13*Rk3+d14*Rk4+d15*Rk5);
@@ -843,59 +835,6 @@ f\
 #pragma omp barrier
 
 
-
-// //// ============================================ ////
-		// if (myid ==0) istart = 2;		          ////	
-		// else istart = 0;            			  ////	
-// //// ============================================ ////
-		// if (myid ==nproc-1) iend = gend[myid]+1;  ////
-		// else iend = gend[myid]+3;				  ////
-// //// ============================================ ////
-
-	// for (i = istart; i <= iend; i++) {
-	
-		// if (i+gstart[myid] > nx_inlet+2 && i+gstart[myid] < (X_out-nx_outlet+3)) {
-		
-			// for (j = ny-ny_abs+1; j < nyy; j++) {
-				// for (k = 2; k <= nz; k++) {
-				
-					// NR1[i][j][k] = NL1[i][j][k] = 0;
-					// NR2[i][j][k] = NL2[i][j][k] = 0;
-					// NR3[i][j][k] = NL3[i][j][k] = 0;
-					// NR4[i][j][k] = NL4[i][j][k] = 0;
-					// NR5[i][j][k] = NL5[i][j][k] = 0;
-					
-				
-				// }
-			// }
-			
-		// }
-	// }
-			
-
-	istart = 3;            		
-	iend = gend[myid];				 
-		
-	for (i = istart; i <= iend; i++) {
-	
-		if (i+gstart[myid] > nx_inlet+2 && i+gstart[myid] < (X_out-nx_outlet+3)) {
-		
-			for (j = ny-ny_abs+1; j <= ny-ny_abs+2; j++) {
-				for (k = 2; k <= nz; k++) {
-				
-					NR1[i][j][k] = NL1[i][j][k] = 0;
-					NR2[i][j][k] = NL2[i][j][k] = 0;
-					NR3[i][j][k] = NL3[i][j][k] = 0;
-					NR4[i][j][k] = NL4[i][j][k] = 0;
-					NR5[i][j][k] = NL5[i][j][k] = 0;
-					
-				
-				}
-			}
-			
-		}
-	}
-	
 
 
 
@@ -1274,28 +1213,6 @@ f\
 		
 		
 		
-	istart = 3;            		
-	iend = gend[myid];				 
-		
-	for (i = istart; i <= iend; i++) {
-	
-		if (i+gstart[myid] > nx_inlet+2 && i+gstart[myid] < (X_out-nx_outlet+3)) {
-		
-			for (j = ny-ny_abs+1; j <= ny-ny_abs+2; j++) {
-				for (k = 2; k <= nz; k++) {
-				
-					NR1[i][j][k] = NL1[i][j][k] = 0;
-					NR2[i][j][k] = NL2[i][j][k] = 0;
-					NR3[i][j][k] = NL3[i][j][k] = 0;
-					NR4[i][j][k] = NL4[i][j][k] = 0;
-					NR5[i][j][k] = NL5[i][j][k] = 0;
-					
-				}
-			}
-			
-		}
-	}
-	
 			
 
 		
@@ -1724,9 +1641,9 @@ f\
 				U5_[i][j][k] = (P/(K-1)+0.5*rho*(U*U+V*V+W*W))/J[i][j][k];
 				
 				
-				Residual1[i][j][k] = (rho-rhoold)*(rho-rhoold);
+				// Residual1[i][j][k] = (rho-rhoold)*(rho-rhoold);
 				
-				//Residual1[i][j][k] = (P-Pold)*(P-Pold);
+				Residual1[i][j][k] = (P-Pold)*(P-Pold);
 				Residual2[i][j][k] = (U-Uold)*(U-Uold);
 				Residual3[i][j][k] = (V-Vold)*(V-Vold);
 				Residual4[i][j][k] = (W-Wold)*(W-Wold);
@@ -1744,51 +1661,6 @@ f\
 	istart = 0;
 	iend = gend[myid]+3;
 
-	// for (i = istart; i <= iend; i++) {
-	
-		// if (i+gstart[myid] > nx_inlet+1 && i+gstart[myid] < (X_out-nx_outlet+4)) {
-		
-			// for (j = ny-ny_abs+1; j <= ny-ny_abs+2; j++) {
-				// for (k = 2; k <= nz; k++) {
-				
-					// U1_[i][j][k] = 1.1842/J[i][j][k];
-					// U2_[i][j][k] = 0;
-					// U3_[i][j][k] = 0;
-					// U4_[i][j][k] = 0;
-					// U5_[i][j][k] = 253250/J[i][j][k];
-					
-					// Residual1[i][j][k] = 0;
-					// Residual2[i][j][k] = 0;
-					// Residual3[i][j][k] = 0;
-					// Residual4[i][j][k] = 0;
-					// Residual5[i][j][k] = 0;
-					
-				// }
-			// }
-			
-		// }
-	// }
-	
-	
-	
-	for (i = istart; i <= iend; i++) {
-
-#pragma omp parallel for private(k)
-
-		for (j = ny-ny_abs+1; j <= nyy; j++) {
-			for (k = 2; k <= nz; k++) {
-		
-				Residual1[i][j][k] = 0;
-				Residual2[i][j][k] = 0;
-				Residual3[i][j][k] = 0;
-				Residual4[i][j][k] = 0;
-				Residual5[i][j][k] = 0;
-					
-			}	
-		}
-	}
-			
-	
 	
 
 //// ======================== ////
@@ -1798,6 +1670,9 @@ f\
 //// ======================== ////
 
 	for (i = istart; i <= iend; i++) {
+	
+#pragma omp parallel for private(k) reduction(+:e1,e2,e3,e4,e5)
+	
 		for (j = 2; j <= ny; j++) {
 			for (k = 2; k <= nz; k++) {
 				

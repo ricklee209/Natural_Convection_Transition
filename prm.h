@@ -15,7 +15,7 @@ double Qold = Q0;
 
 //double high = 0.1;
 
-double high = 0.1000165375051;
+double high = 0.1;
 
 double psi = 0.001;
 

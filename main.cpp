@@ -43,8 +43,8 @@ int main(int argc, char **argv)
 
 	int statistic_step = 10000;
 	int iteration_end_step = 100;
-	int output_step = 2000;
-	int count = 50001;
+	int output_step = 50;
+	int count = 1001;
 	int step;
 	
 	double e = 0.00002;
@@ -54,7 +54,7 @@ int main(int argc, char **argv)
 	double E_high = 1.;
 	double E_low = 0.1;
 
-	double heat_flux = 208;
+	double heat_flux = 104;
 
 	double obs1 = 0.11;
 	double obs2 = 0.82;
@@ -289,10 +289,10 @@ int X_np = gcount[myid]+6;    /**** How many cells in X-direction for each CPU *
 	er4 = er4/E4;
 	er5 = er5/E5;
 	
-	//if (myid == 0) 
-		//printf("%d\t%f\t%f\t%f\t%f\t%f\n",iteration,er1,er2,er3,er4,er5);
-	
-			
+	// if (myid == 0) 
+		// printf("%d\t%f\t%f\t%f\t%f\t%f\n",iteration,er1,er2,er3,er4,er5);
+
+		
 // ================================================================================================ //
 			if ((er1<0.001 & er2<0.001 & er3<0.001 & er4<0.001 & er5<0.001) | iteration == iteration_end_step) {    //
 // ================================================================================================ //

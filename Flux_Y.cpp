@@ -577,15 +577,15 @@ double (*EpY)[Y_m][Z_m] = new double[X_np][Y_m][Z_m]
 				
 				
 				
-				// if (j==1 | j==ny) {
+				if (j==1 | j==ny) {
 
-					// inFy1[i][j][k] = 0;
-					// inFy2[i][j][k] = 0;
-					// inFy3[i][j][k] = 0.5*(ety*(_P+P_)-Ep*Fav3)/J_v[i][j][k];
-					// inFy4[i][j][k] = 0;
-					// inFy5[i][j][k] = 0;
+					inFy1[i][j][k] = 0;
+					inFy2[i][j][k] = 0;
+					inFy3[i][j][k] = 0.5*(ety*(_P+P_)-Ep*Fav3)/J_v[i][j][k];
+					inFy4[i][j][k] = 0;
+					inFy5[i][j][k] = 0;
 
-				// }
+				}
 				
 				
 			}
