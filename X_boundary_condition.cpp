@@ -148,13 +148,13 @@ double (*J)[Y_m][Z_m] = new double[X_np][Y_m][Z_m]
 
 				else {
 
-					//L1 = L2 = L3 = 0;
+					L1 = L2 = L3 = 0;
 
-					L1 = 0;
+					// L1 = 0;
 					
-					L2 = 0.25*(U_p-C_p-U)/(X_out*deltaXI)*(W-0.);
+					// L2 = 0.25*(U_p-C_p-U)/(X_out*deltaXI)*(W-0.);
 					
-					L3 = 0.25*(U_p-C_p-U)/(X_out*deltaXI)*(V-0.);
+					// L3 = 0.25*(U_p-C_p-U)/(X_out*deltaXI)*(V-0.);
 					
 				}
 				

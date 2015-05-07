@@ -24,6 +24,8 @@ void Initial_condition
 // ======================================================== //
 int myid,
 
+int switch_initial,
+
 double (*U1_)[Y_m][Z_m] = new double[X_np][Y_m][Z_m], 
 double (*U2_)[Y_m][Z_m] = new double[X_np][Y_m][Z_m], 
 double (*U3_)[Y_m][Z_m] = new double[X_np][Y_m][Z_m], 
@@ -787,6 +789,8 @@ int step,
 
 int myid,
 
+int switch_output,
+
 double (*U1)[Y_m][Z_m] = new double[X_np][Y_m][Z_m], 
 double (*U2)[Y_m][Z_m] = new double[X_np][Y_m][Z_m], 
 double (*U3)[Y_m][Z_m] = new double[X_np][Y_m][Z_m], 
@@ -806,6 +810,38 @@ double (*Z_point)[Y_m][Z_m] = new double[X_np][Y_m][Z_m],
 double (*J)[Y_m][Z_m] = new double[X_np][Y_m][Z_m]
 // ============================================================================ //
 );
+
+
+
+void Output_plot3d
+(
+// ============================================================================ //
+int step,
+
+int myid,
+
+int switch_output,
+
+double (*U1)[Y_m][Z_m] = new double[X_np][Y_m][Z_m], 
+double (*U2)[Y_m][Z_m] = new double[X_np][Y_m][Z_m], 
+double (*U3)[Y_m][Z_m] = new double[X_np][Y_m][Z_m], 
+double (*U4)[Y_m][Z_m] = new double[X_np][Y_m][Z_m], 
+double (*U5)[Y_m][Z_m] = new double[X_np][Y_m][Z_m], 
+
+double (*U1q)[Y_m][Z_m] = new double[X_np][Y_m][Z_m], 
+double (*U2q)[Y_m][Z_m] = new double[X_np][Y_m][Z_m], 
+double (*U3q)[Y_m][Z_m] = new double[X_np][Y_m][Z_m], 
+double (*U4q)[Y_m][Z_m] = new double[X_np][Y_m][Z_m], 
+double (*U5q)[Y_m][Z_m] = new double[X_np][Y_m][Z_m], 
+
+double (*X_point)[Y_m][Z_m] = new double[X_np][Y_m][Z_m],
+double (*Y_point)[Y_m][Z_m] = new double[X_np][Y_m][Z_m],
+double (*Z_point)[Y_m][Z_m] = new double[X_np][Y_m][Z_m],
+
+double (*J)[Y_m][Z_m] = new double[X_np][Y_m][Z_m]
+// ============================================================================ //
+);
+
 
 
 

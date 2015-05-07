@@ -43,9 +43,16 @@ int main(int argc, char **argv)
 
 	int statistic_step = 10000;
 	int iteration_end_step = 100;
-	int output_step = 50;
-	int count = 1001;
+	int output_step = 4;
+	int count = 2;
 	int step;
+	
+	
+	int switch_initial = 1; // ---- 1 reading initial coniditon ---- //
+
+	int switch_output = 1;  // ---- 1 output grid file ---- //
+
+
 	
 	double e = 0.00002;
 	double deltaT = 0.0008;
@@ -104,7 +111,7 @@ int X_np = gcount[myid]+6;    /**** How many cells in X-direction for each CPU *
 
 	
 	
-	Initial_condition(myid,
+	Initial_condition(myid, switch_initial,
 					  U1_,U2_,U3_,U4_,U5_,
 					  U1, U2, U3, U4, U5,
 					  U1q,U2q,U3q,U4q,U5q,
@@ -294,7 +301,7 @@ int X_np = gcount[myid]+6;    /**** How many cells in X-direction for each CPU *
 
 		
 // ================================================================================================ //
-			if ((er1<0.001 & er2<0.001 & er3<0.001 & er4<0.001 & er5<0.001) | iteration == iteration_end_step) {    //
+			if ((er1<0.0001 & er2<0.0001 & er3<0.0001 & er4<0.0001 & er5<0.0001) | iteration == iteration_end_step) {    //
 // ================================================================================================ //
 
 				Driven_force(myid, U2,J);
@@ -393,8 +400,10 @@ int X_np = gcount[myid]+6;    /**** How many cells in X-direction for each CPU *
 //// ================================================================================================== ////
 	if ((step%output_step) == 0) {
 
-		Output(step,myid,U1,U2,U3,U4,U5,U1q,U2q,U3q,U4q,U5q,X_point, Y_point, Z_point, J);
+		// Output_plot3d(step,myid,switch_output,U1,U2,U3,U4,U5,U1q,U2q,U3q,U4q,U5q,X_point, Y_point, Z_point, J);
 
+		Output(step,myid,switch_output,U1,U2,U3,U4,U5,U1q,U2q,U3q,U4q,U5q,X_point, Y_point, Z_point, J);
+		
 	}
 
 //// ================================================================================================== ////

@@ -602,7 +602,7 @@ double (*J_v)[Y_m][Z_m] = new double[X_np][Y_m][Z_m]
 					v = U3_[i][j][k]/U1_[i][j][k];
 					w = U4_[i][j][k]/U1_[i][j][k];     
 					VV = u*u+v*v+w*w;
-					P = (U5_[i][j][k]-0.5*rho*VV)*(K-1);
+					P = (U5_[i][j][k]*J[i][j][k]-0.5*rho*VV)*(K-1);
 					C = K*P/rho;
 
 					/* preconditioning */
@@ -1641,9 +1641,9 @@ f\
 				U5_[i][j][k] = (P/(K-1)+0.5*rho*(U*U+V*V+W*W))/J[i][j][k];
 				
 				
-				// Residual1[i][j][k] = (rho-rhoold)*(rho-rhoold);
+				Residual1[i][j][k] = (rho-rhoold)*(rho-rhoold);
 				
-				Residual1[i][j][k] = (P-Pold)*(P-Pold);
+				// Residual1[i][j][k] = (P-Pold)*(P-Pold);
 				Residual2[i][j][k] = (U-Uold)*(U-Uold);
 				Residual3[i][j][k] = (V-Vold)*(V-Vold);
 				Residual4[i][j][k] = (W-Wold)*(W-Wold);

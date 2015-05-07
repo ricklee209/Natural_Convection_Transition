@@ -18,6 +18,8 @@ void Output
 	int step,
 
 	int myid,
+	
+	int switch_output,
 
 	double (*U1)[Y_m][Z_m] = new double[X_np][Y_m][Z_m], 
 	double (*U2)[Y_m][Z_m] = new double[X_np][Y_m][Z_m], 
@@ -68,101 +70,105 @@ void Output
 	MPI_Offset Nsize;
 
 
-
-	//double (*Xout)[Y_out][Z_out] = new double[X_out+1][Y_out][Z_out];
-	double (*Yout)[Y_out][Z_out] = new double[X_out+1][Y_out][Z_out];
-	//double (*Zout)[Y_out][Z_out] = new double[X_out+1][Y_out][Z_out];
+	if ( switch_output == 1 ) {
 
 
-	if (myid == 0) {
+		//double (*Xout)[Y_out][Z_out] = new double[X_out+1][Y_out][Z_out];
+		double (*Yout)[Y_out][Z_out] = new double[X_out+1][Y_out][Z_out];
+		//double (*Zout)[Y_out][Z_out] = new double[X_out+1][Y_out][Z_out];
 
-		double gamma1 = 2.8;
-		double gamma2 = 2.5;
 
-		//#pragma omp parallel for private(j,k)
-		for (i = 0; i < nx_out; i++) {
-			for (j = 0; j < ny_out; j++) { 
-				for (k = 0; k < nz_out; k++) { 
+		if (myid == 0) {
 
-					//Xout[i][j][k] = deltaXI*(i+0.5);
+			double gamma1 = 2.8;
+			double gamma2 = 2.5;
 
-					if (j < Y_out-ny_abs)
-						Yout[i][j][k] = (0.5*high)*(1-1./tanh(gamma1)*tanh(gamma1*(1-2*(j+0.5)*deltaET)));
-					else {
+			//#pragma omp parallel for private(j,k)
+			for (i = 0; i < nx_out; i++) {
+				for (j = 0; j < ny_out; j++) { 
+					for (k = 0; k < nz_out; k++) { 
 
-						Yout[i][j][k] = (0.5*high)*(1-1./tanh(gamma2)*tanh(gamma2*(1-2*(j-(ny_out-ny_abs)+0.5)*deltaET)))+high;
+						//Xout[i][j][k] = deltaXI*(i+0.5);
 
-						//if(i==0 && k == 0) printf("%f\n",Yout[i][j][k]);
+						if (j < Y_out-ny_abs)
+							Yout[i][j][k] = (0.5*high)*(1-1./tanh(gamma1)*tanh(gamma1*(1-2*(j+0.5)*deltaET)));
+						else {
+
+							Yout[i][j][k] = (0.5*high)*(1-1./tanh(gamma2)*tanh(gamma2*(1-2*(j-(ny_out-ny_abs)+0.5)*deltaET)))+high;
+
+							//if(i==0 && k == 0) printf("%f\n",Yout[i][j][k]);
+
+						}
+
+
+						//Zout[i][j][k] = deltaZT*(k+0.5);
+
 
 					}
+				}
+			}  
 
 
-					//Zout[i][j][k] = deltaZT*(k+0.5);
 
+			char LESdata[100];
+			FILE *fptr;
+			sprintf(LESdata,"P3D_LES""%0.5d"".x",1);
+			fptr = fopen(LESdata,"wb");
 
+			fwrite(&Nblock, sizeof(int), 1,fptr);
+
+			fwrite(&nx_out, sizeof(int), 1,fptr);
+			fwrite(&ny_out, sizeof(int), 1,fptr);
+			fwrite(&nz_out, sizeof(int), 1,fptr);
+
+			for (k = 0; k < nz_out; k++) { 
+				for (j = 0; j < ny_out; j++) { 
+					for (i = 0; i < nx_out; i++) {
+
+						//fwrite(&Xout[i][j][k],sizeof(double),1,fptr);
+
+						tempX = deltaXI*(i+0.5);
+
+						fwrite(&tempX,sizeof(double),1,fptr);
+
+					}
 				}
 			}
-		}  
 
+			for (k = 0; k < nz_out; k++) { 
+				for (j = 0; j < ny_out; j++) { 
+					for (i = 0; i < nx_out; i++) {
 
+						fwrite(&Yout[i][j][k],sizeof(double),1,fptr);
 
-		char LESdata[100];
-		FILE *fptr;
-		sprintf(LESdata,"P3D_LES""%0.5d"".x",1);
-		fptr = fopen(LESdata,"wb");
-
-		fwrite(&Nblock, sizeof(int), 1,fptr);
-
-		fwrite(&nx_out, sizeof(int), 1,fptr);
-		fwrite(&ny_out, sizeof(int), 1,fptr);
-		fwrite(&nz_out, sizeof(int), 1,fptr);
-
-		for (k = 0; k < nz_out; k++) { 
-			for (j = 0; j < ny_out; j++) { 
-				for (i = 0; i < nx_out; i++) {
-
-					//fwrite(&Xout[i][j][k],sizeof(double),1,fptr);
-
-					tempX = deltaXI*(i+0.5);
-
-					fwrite(&tempX,sizeof(double),1,fptr);
-
+					}
 				}
 			}
-		}
 
-		for (k = 0; k < nz_out; k++) { 
-			for (j = 0; j < ny_out; j++) { 
-				for (i = 0; i < nx_out; i++) {
+			for (k = 0; k < nz_out; k++) { 
+				for (j = 0; j < ny_out; j++) { 
+					for (i = 0; i < nx_out; i++) {
 
-					fwrite(&Yout[i][j][k],sizeof(double),1,fptr);
+						//fwrite(&Zout[i][j][k],sizeof(double),1,fptr);
 
+						tempZ = deltaZT*(k+0.5);
+
+						fwrite(&tempZ,sizeof(double),1,fptr);
+
+					}
 				}
 			}
-		}
 
-		for (k = 0; k < nz_out; k++) { 
-			for (j = 0; j < ny_out; j++) { 
-				for (i = 0; i < nx_out; i++) {
+			fclose(fptr);
 
-					//fwrite(&Zout[i][j][k],sizeof(double),1,fptr);
-
-					tempZ = deltaZT*(k+0.5);
-
-					fwrite(&tempZ,sizeof(double),1,fptr);
-
-				}
-			}
-		}
-
-		fclose(fptr);
-
-	}    // ---- if (myid == 0) ---- //
+		}    // ---- if (myid == 0) ---- //
 
 
-	//delete [] Xout;
-	delete [] Yout;
-	//delete [] Zout;
+		//delete [] Xout;
+		delete [] Yout;
+		//delete [] Zout;
+		
+	}
 
 
 
