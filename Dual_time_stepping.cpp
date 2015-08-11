@@ -616,11 +616,11 @@ double (*J_v)[Y_m][Z_m] = new double[X_np][Y_m][Z_m]
 					
 					
 					
-					Residual1[i][j][k] = -U_out_1*( U1_[i][j][k]*J[i][j][k]-U1_[i-1][j][k]*J[i-1][j][k] )/deltaXI+Sigma_out*(rho-1.1842);
-					Residual2[i][j][k] = -U_out_1*( U2_[i][j][k]*J[i][j][k]-U2_[i-1][j][k]*J[i-1][j][k] )/deltaXI+Sigma_out*(rho*u);
-					Residual3[i][j][k] = -U_out_1*( U3_[i][j][k]*J[i][j][k]-U3_[i-1][j][k]*J[i-1][j][k] )/deltaXI+Sigma_out*(rho*v);
-					Residual4[i][j][k] = -U_out_1*( U4_[i][j][k]*J[i][j][k]-U4_[i-1][j][k]*J[i-1][j][k] )/deltaXI+Sigma_out*(rho*w);
-					Residual5[i][j][k] = -U_out_1*( U5_[i][j][k]*J[i][j][k]-U5_[i-1][j][k]*J[i-1][j][k] )/deltaXI+Sigma_out*(U5_[i][j][k]*J[i][j][k]-253250.0);
+					Residual1[i][j][k] = -U_out_1*( U1_[i][j][k]*J[i][j][k]-U1_[i-1][j][k]*J[i-1][j][k] )/deltaXI-Sigma_out*(rho-1.1842);
+					Residual2[i][j][k] = -U_out_1*( U2_[i][j][k]*J[i][j][k]-U2_[i-1][j][k]*J[i-1][j][k] )/deltaXI-Sigma_out*(rho*u);
+					Residual3[i][j][k] = -U_out_1*( U3_[i][j][k]*J[i][j][k]-U3_[i-1][j][k]*J[i-1][j][k] )/deltaXI-Sigma_out*(rho*v);
+					Residual4[i][j][k] = -U_out_1*( U4_[i][j][k]*J[i][j][k]-U4_[i-1][j][k]*J[i-1][j][k] )/deltaXI-Sigma_out*(rho*w);
+					Residual5[i][j][k] = -U_out_1*( U5_[i][j][k]*J[i][j][k]-U5_[i-1][j][k]*J[i-1][j][k] )/deltaXI-Sigma_out*(U5_[i][j][k]*J[i][j][k]-253250.0);
 					
 					
 					
