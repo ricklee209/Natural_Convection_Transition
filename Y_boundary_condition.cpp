@@ -71,8 +71,6 @@ void Y_boundary_condition
 
 	 double V_p, C_p;
 
-	 double _rho, _U, _V, _W, _VV, _P, _C, _T;
-
 	 double rho_, U_, V_, W_, VV_, P_, C_, T_;
 
 	 double rhoold, Uold, Vold, Wold, VVold, Pold, Cold, Told; 

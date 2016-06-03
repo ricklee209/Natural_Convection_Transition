@@ -42,13 +42,13 @@ int main(int argc, char **argv)
 #include "Resolution.h"
 
 	int statistic_step = 10000;
-	int iteration_end_step = 100;
-	int output_step = 4;
-	int count = 2;
+	int iteration_end_step = 5;
+	int output_step = 5;
+	int count = 100;
 	int step;
 	
 	
-	int switch_initial = 1; // ---- 1 reading initial coniditon ---- //
+	int switch_initial = 0; // ---- 1 reading initial coniditon ---- //
 
 	int switch_output = 1;  // ---- 1 output grid file ---- //
 

@@ -60,7 +60,7 @@ double (*J)[Y_m][Z_m] = new double[X_np][Y_m][Z_m]
 
 	double rho, U, V, W, VV, P, C, T, H;
 
-	double _rho, _U, _V, _W, _VV, _P, _C, _T;
+	double _rho, iU, _V, _W, _VV, iP, iC, _T;
 
 	double rho_, U_, V_, W_, VV_, P_, C_, T_;
 
@@ -221,13 +221,13 @@ double (*J)[Y_m][Z_m] = new double[X_np][Y_m][Z_m]
 				/* outlet */
 
 				_rho = U1_[iend][j][k]*J[iend][j][k];
-				_U = U2_[iend][j][k]/U1_[iend][j][k];
+				iU = U2_[iend][j][k]/U1_[iend][j][k];
 				_V = U3_[iend][j][k]/U1_[iend][j][k];
 				_W = U4_[iend][j][k]/U1_[iend][j][k];
-				_VV = _U*_U+_V*_V+_W*_W;
-				_P = (U5_[iend][j][k]*J[iend][j][k]-0.5*_rho*_VV)*(K-1);
-				_C = sqrt(K*_P/_rho);
-				_T = _P/_rho;
+				_VV = iU*iU+_V*_V+_W*_W;
+				iP = (U5_[iend][j][k]*J[iend][j][k]-0.5*_rho*_VV)*(K-1);
+				iC = sqrt(K*iP/_rho);
+				_T = iP/_rho;
 
 				rho = U1_[iend+1][j][k]*J[iend+1][j][k];
 				U = U2_[iend+1][j][k]/U1_[iend+1][j][k];
@@ -282,9 +282,9 @@ double (*J)[Y_m][Z_m] = new double[X_np][Y_m][Z_m]
 
 				C_p = 0.5*sqrt(U*U*(beta-1)*(beta-1)+4*beta*C*C);
 
-				dp_dx = (P-_P)/deltaXI;
+				dp_dx = (P-iP)/deltaXI;
 
-				du_dx = (U-_U)/deltaXI;
+				du_dx = (U-iU)/deltaXI;
 
 				dv_dx = (V-_V)/deltaXI;
 
