@@ -82,7 +82,7 @@ double (*EpZ)[Y_m][Z_m] = new double[X_np][Y_m][Z_m]
 
 	double xix,xiy,xiz,etx,ety,etz,ztx,zty,ztz;
 	double XIx,XIy,XIz,ETx,ETy,ETz,ZTx,ZTy,ZTz;
-	double _rho,_u,_v,_w,_U,_V,_W,__U,__V,__W,_VV,_P,_T,_C,_H;
+	double _rho,_u,_v,_w,iU,_V,_W,__U,__V,__W,_VV,iP,_T,iC,_H;
 	double rho_,u_,v_,w_,U_,V_,W_,U__,V__,W__,VV_,P_,T_,C_,H_;
 	double _U_,_V_,_W_;
 	double dU1,dU2,dU3,dU4,dU5;
@@ -318,7 +318,7 @@ double (*EpZ)[Y_m][Z_m] = new double[X_np][Y_m][Z_m]
 
 #pragma omp parallel for private(\
 	xix,xiy,xiz,etx,ety,etz,ztx,zty,ztz,ZTx,ZTy,ZTz,\
-	_rho,_u,_v,_w,_U,_V,_W,__W,_VV,_P,_T,_C,_H,\
+	_rho,_u,_v,_w,iU,_V,_W,__W,_VV,iP,_T,iC,_H,\
 	rho_,u_,v_,w_,U_,V_,W_,W__,VV_,P_,T_,C_,H_,\
 	rho,u,v,w,U,V,W,_W_,VV,H,C,P,T,\
 	dU1,dU2,dU3,dU4,dU5,\
@@ -352,17 +352,17 @@ double (*EpZ)[Y_m][Z_m] = new double[X_np][Y_m][Z_m]
 				_v = ML3[i][j][k]/_rho;
 				_w = ML4[i][j][k]/_rho;
 
-				_U = xix*_u+xiy*_v+xiz*_w;
+				iU = xix*_u+xiy*_v+xiz*_w;
 				_V = etx*_u+ety*_v+etz*_w;
 				_W = ztx*_u+zty*_v+ztz*_w;
 
 				__W = ZTx*_u+ZTy*_v+ZTz*_w;
 
 				_VV = _u*_u+_v*_v+_w*_w;
-				_P = (ML5[i][j][k]-0.5*_rho*_VV)*(K-1);
-				_T = _P/_rho;
-				_C = K*_P/_rho;
-				_H = 0.5*_VV+_C/(K-1);
+				iP = (ML5[i][j][k]-0.5*_rho*_VV)*(K-1);
+				_T = iP/_rho;
+				iC = K*iP/_rho;
+				_H = 0.5*_VV+iC/(K-1);
 
 				/* right parameter */
 				rho_ = MR1[i][j][k];
@@ -388,7 +388,7 @@ double (*EpZ)[Y_m][Z_m] = new double[X_np][Y_m][Z_m]
 				v = 0.5*(_v+v_);
 				w = 0.5*(_w+w_);
 
-				U = 0.5*(_U+U_);
+				U = 0.5*(iU+U_);
 				V = 0.5*(_V+V_);
 				W = 0.5*(_W+W_); 
 
@@ -401,7 +401,7 @@ double (*EpZ)[Y_m][Z_m] = new double[X_np][Y_m][Z_m]
 				T = P/rho;
 
 				/* jump dU */
-				dU1 = P_-_P;
+				dU1 = P_-iP;
 				dU2 = u_-_u;
 				dU3 = v_-_v;
 				dU4 = w_-_w;
@@ -473,10 +473,10 @@ double (*EpZ)[Y_m][Z_m] = new double[X_np][Y_m][Z_m]
 
 				/* inviscid fluxes */
 				inFz1[i][j][k] = 0.5*((_rho*_W+rho_*W_-Ep*Fav1))/J_w[i][j][k];
-				inFz2[i][j][k] = 0.5*((_rho*_u*_W+rho_*u_*W_+ztx*(_P+P_))-Ep*Fav2)/J_w[i][j][k];
-				inFz3[i][j][k] = 0.5*((_rho*_v*_W+rho_*v_*W_+zty*(_P+P_))-Ep*Fav3)/J_w[i][j][k];
-				inFz4[i][j][k] = 0.5*((_rho*_w*_W+rho_*w_*W_+ztz*(_P+P_))-Ep*Fav4)/J_w[i][j][k];
-				inFz5[i][j][k] = 0.5*((_W*(3.5*_P+0.5*_rho*_VV)+W_*(3.5*P_+0.5*rho_*VV_))-Ep*Fav5)/J_w[i][j][k];
+				inFz2[i][j][k] = 0.5*((_rho*_u*_W+rho_*u_*W_+ztx*(iP+P_))-Ep*Fav2)/J_w[i][j][k];
+				inFz3[i][j][k] = 0.5*((_rho*_v*_W+rho_*v_*W_+zty*(iP+P_))-Ep*Fav3)/J_w[i][j][k];
+				inFz4[i][j][k] = 0.5*((_rho*_w*_W+rho_*w_*W_+ztz*(iP+P_))-Ep*Fav4)/J_w[i][j][k];
+				inFz5[i][j][k] = 0.5*((_W*(3.5*iP+0.5*_rho*_VV)+W_*(3.5*P_+0.5*rho_*VV_))-Ep*Fav5)/J_w[i][j][k];
 
 			}
 		}

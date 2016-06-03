@@ -91,7 +91,7 @@ double (*EpY)[Y_m][Z_m] = new double[X_np][Y_m][Z_m]
 
 	double xix,xiy,xiz,etx,ety,etz,ztx,zty,ztz;
 	double XIx,XIy,XIz,ETx,ETy,ETz,ZTx,ZTy,ZTz;
-	double _rho,_u,_v,_w,_U,_V,_W,__U,__V,__W,_VV,_P,_T,_C,_H;
+	double _rho,_u,_v,_w,iU,_V,_W,__U,__V,__W,_VV,iP,_T,iC,_H;
 	double rho_,u_,v_,w_,U_,V_,W_,U__,V__,W__,VV_,P_,T_,C_,H_;
 	double _U_,_V_,_W_;
 	double dU1,dU2,dU3,dU4,dU5;
@@ -298,7 +298,7 @@ double (*EpY)[Y_m][Z_m] = new double[X_np][Y_m][Z_m]
 
 	// #pragma omp parallel for private(\
 	// xix,xiy,xiz,etx,ety,etz,ztx,zty,ztz,ETx,ETy,ETz,\
-	// _rho,_u,_v,_w,_U,_V,_W,__V,_VV,_P,_T,_C,_H,\
+	// _rho,_u,_v,_w,iU,_V,_W,__V,_VV,iP,_T,iC,_H,\
 	// rho_,u_,v_,w_,U_,V_,W_,V__,VV_,P_,T_,C_,H_,\
 	// rho,u,v,w,U,V,W,_V_,VV,H,C,P,T,\
 	// dU1,dU2,dU3,dU4,dU5,\
@@ -334,7 +334,7 @@ double (*EpY)[Y_m][Z_m] = new double[X_np][Y_m][Z_m]
 				// _v = ML3[i][j][k]/_rho;
 				// _w = ML4[i][j][k]/_rho;
 
-				// _U = xix*_u+xiy*_v+xiz*_w;
+				// iU = xix*_u+xiy*_v+xiz*_w;
 				// _V = etx*_u+ety*_v+etz*_w;
 
 				// _W = ztx*_u+zty*_v+ztz*_w;
@@ -344,10 +344,10 @@ double (*EpY)[Y_m][Z_m] = new double[X_np][Y_m][Z_m]
 
 
 				// _VV = _u*_u+_v*_v+_w*_w;
-				// _P = (ML5[i][j][k]-0.5*_rho*_VV)*(K-1);
-				// _T = _P/_rho;
-				// _C = sqrt(K*_P/_rho);
-				// _H = 0.5*_VV+_C*_C/(K-1);
+				// iP = (ML5[i][j][k]-0.5*_rho*_VV)*(K-1);
+				// _T = iP/_rho;
+				// iC = sqrt(K*iP/_rho);
+				// _H = 0.5*_VV+iC*iC/(K-1);
 
 				// /* right parameter */
 				// rho_ = MR1[i][j][k];
@@ -373,7 +373,7 @@ double (*EpY)[Y_m][Z_m] = new double[X_np][Y_m][Z_m]
 				// v = 0.5*(_v+v_);
 				// w = 0.5*(_w+w_);
 
-				// U = 0.5*(_U+U_);
+				// U = 0.5*(iU+U_);
 				// V = 0.5*(_V+V_);
 				// W = 0.5*(_W+W_); 
 
@@ -387,7 +387,7 @@ double (*EpY)[Y_m][Z_m] = new double[X_np][Y_m][Z_m]
 
 
 				// /* jump dU */
-				// dU1 = P_-_P;
+				// dU1 = P_-iP;
 				// dU2 = u_-_u;
 				// dU3 = v_-_v;
 				// dU4 = w_-_w;

@@ -151,7 +151,7 @@ double (*NL5)[Y_m][Z_m] = new double[X_np][Y_m][Z_m]
 	double rho,U,V,W,VV,P,C,T,h,H;
 
 	double xix,xiy,xiz,etx,ety,etz,ztx,zty,ztz;
-	double _rho,_u,_v,_w,_U,_V,_W,__U,__V,__W,_VV,_P,_T,_C,_H;
+	// double _rho,_u,_v,_w,_U,_V,_W,__U,__V,__W,_VV,_P,_T,_C,_H;
 	double rho_,u_,v_,w_,U_,V_,W_,U__,V__,W__,VV_,P_,T_,C_,H_;
 	double _U_,_V_,_W_;
 	double dU1,dU2,dU3,dU4,dU5;
